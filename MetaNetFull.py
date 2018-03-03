@@ -161,27 +161,27 @@ class MetaNetFull(chainer.Chain):
 		for x in [support_sets, x_set]:
 			x = mod.asarray(x, dtype=np.float32).reshape((-1, 1, 28, 28))
 			x = Variable(x)
-				with chainer.no_backprop_mode():
-					with chainer.force_backprop_mode():
-						x = F.dropout(x, ratio=0.0, train=train)
-						h = model.key_1(x, train) + model.key_1.call_on_W(x, key_1_W, train)
-						h = F.max_pooling_2d(h, ksize=2, stride=2)
-						h = F.dropout(h, ratio=0.0, train=train)
-						h = model.key_2(h, train) + model.key_2.call_on_W(h, key_2_W, train)
-						h = F.max_pooling_2d(h, ksize=2, stride=2)
-						h = F.dropout(h, ratio=0.0, train=train)
-						h = model.key_3(h, train) + model.key_3.call_on_W(h, key_3_W, train)
-						h = F.max_pooling_2d(h, ksize=2, stride=2)
-						h = F.dropout(h, ratio=0.0, train=train)
-						h = model.key_4(h, train) + model.key_4.call_on_W(h, key_4_W, train)
-						h = F.max_pooling_2d(h, ksize=2, stride=2)
-						h = F.dropout(h, ratio=0.0, train=train)
-						h = model.key_5(h, train) + model.key_5.call_on_W(h, key_5_W, train)
-						h = F.max_pooling_2d(h, ksize=2, stride=2)
-						h = F.reshape(h, (-1, 64))
-						h = F.dropout(h, ratio=0.0, train=train)
-						h = model.key_fc1(h) + F.matmul(h, key_fc1_W, transb=True)
-						keys.append(h)
+			with chainer.no_backprop_mode():
+				with chainer.force_backprop_mode():
+					x = F.dropout(x, ratio=0.0, train=train)
+					h = model.key_1(x, train) + model.key_1.call_on_W(x, key_1_W, train)
+					h = F.max_pooling_2d(h, ksize=2, stride=2)
+					h = F.dropout(h, ratio=0.0, train=train)
+					h = model.key_2(h, train) + model.key_2.call_on_W(h, key_2_W, train)
+					h = F.max_pooling_2d(h, ksize=2, stride=2)
+					h = F.dropout(h, ratio=0.0, train=train)
+					h = model.key_3(h, train) + model.key_3.call_on_W(h, key_3_W, train)
+					h = F.max_pooling_2d(h, ksize=2, stride=2)
+					h = F.dropout(h, ratio=0.0, train=train)
+					h = model.key_4(h, train) + model.key_4.call_on_W(h, key_4_W, train)
+					h = F.max_pooling_2d(h, ksize=2, stride=2)
+					h = F.dropout(h, ratio=0.0, train=train)
+					h = model.key_5(h, train) + model.key_5.call_on_W(h, key_5_W, train)
+					h = F.max_pooling_2d(h, ksize=2, stride=2)
+					h = F.reshape(h, (-1, 64))
+					h = F.dropout(h, ratio=0.0, train=train)
+					h = model.key_fc1(h) + F.matmul(h, key_fc1_W, transb=True)
+					keys.append(h)
 
 		Ws = [key_1_W, key_2_W, key_3_W, key_4_W, key_5_W, key_fc1_W, key_fc2_W]
 		return keys, Ws
