@@ -72,7 +72,7 @@ class MetaNetFull(chainer.Chain):
 			x = mod.concatenate(support_sets[i:(i+N/IT)], axis=0)
 			x = Variable(x)
 			with chainer.no_backprop_mode():
-...     		with chainer.force_backprop_mode():
+				with chainer.force_backprop_mode():
 					x = F.reshape(x, (-1, 1, 28, 28))
 					x = F.dropout(x, ratio=0.0, train=train)
 					h = model.key_1(x, train)
@@ -97,7 +97,7 @@ class MetaNetFull(chainer.Chain):
 			y_batch = mod.array(support_lbls[i:(i+N/IT)], dtype=np.int32).reshape((-1,))
 			lbl = Variable(y_batch)
 			with chainer.no_backprop_mode():
-...     		with chainer.force_backprop_mode():
+				with chainer.force_backprop_mode():
 					loss = F.softmax_cross_entropy(y, lbl)
 			loss.backward(retain_grad=True)
 
@@ -130,7 +130,7 @@ class MetaNetFull(chainer.Chain):
 			meta_in = mod.array(meta_in)
 			meta_in = Variable(meta_in)
 			with chainer.no_backprop_mode():
-...     		with chainer.force_backprop_mode():
+				with chainer.force_backprop_mode():
 					meta_outs = model.meta_lstm_l1(F.dropout(meta_in, ratio=0.0, train=train))
 					meta_outs = model.meta_lstm_ll1(F.dropout(meta_outs, ratio=0.0, train=train))
 				 
@@ -140,7 +140,7 @@ class MetaNetFull(chainer.Chain):
 			meta_in = mod.array(meta_in)	
 			meta_in = Variable(meta_in)
 			with chainer.no_backprop_mode():
-...     		with chainer.force_backprop_mode():
+				with chainer.force_backprop_mode():
 					meta_outs1 = model.meta_g_lstm_l1(F.dropout(meta_in, ratio=0.0, train=train))
 					meta_outs1 = model.meta_g_lstm_ll1(F.dropout(meta_outs1, ratio=0.0, train=train))
 
@@ -162,7 +162,7 @@ class MetaNetFull(chainer.Chain):
 			x = mod.asarray(x, dtype=np.float32).reshape((-1, 1, 28, 28))
 			x = Variable(x)
 				with chainer.no_backprop_mode():
-...     			with chainer.force_backprop_mode():
+					with chainer.force_backprop_mode():
 						x = F.dropout(x, ratio=0.0, train=train)
 						h = model.key_1(x, train) + model.key_1.call_on_W(x, key_1_W, train)
 						h = F.max_pooling_2d(h, ksize=2, stride=2)
@@ -207,7 +207,7 @@ class MetaNetFull(chainer.Chain):
 			x = support_sets[i]
 			x = Variable(x)
 			with chainer.no_backprop_mode():
-...     		with chainer.force_backprop_mode():
+				with chainer.force_backprop_mode():
 					x = F.reshape(x, (1, 1, 28, 28))
 					
 					h = model.block1_1(x, train)
@@ -233,7 +233,7 @@ class MetaNetFull(chainer.Chain):
 			y_batch = mod.array(support_lbls[i], dtype=np.int32)
 			lbl = Variable(y_batch)
 			with chainer.no_backprop_mode():
-...     		with chainer.force_backprop_mode():
+				with chainer.force_backprop_mode():
 					support_loss = F.softmax_cross_entropy(y, lbl)
 
 			support_loss.backward(retain_grad=True)
@@ -268,7 +268,7 @@ class MetaNetFull(chainer.Chain):
 
 			meta_in = Variable(meta_in)
 			with chainer.no_backprop_mode():
-...     		with chainer.force_backprop_mode():		
+				with chainer.force_backprop_mode():		
 	
 					meta_outs = F.relu(model.m_l1(F.dropout(meta_in, ratio=0.0, train=train)))
 					meta_outs = F.relu(model.m_ll1(F.dropout(meta_outs, ratio=0.0, train=train)))
@@ -284,7 +284,7 @@ class MetaNetFull(chainer.Chain):
 			meta_in = Variable(meta_in)
 			
 			with chainer.no_backprop_mode():
-...     		with chainer.force_backprop_mode():
+				with chainer.force_backprop_mode():
 					meta_outs = F.relu(model.mc_l1(F.dropout(meta_in, ratio=0.0, train=train)))
 					meta_outs = F.relu(model.mc_ll1(F.dropout(meta_outs, ratio=0.0, train=train)))
 					meta_outs = model.meta_g_lstm_l2(F.dropout(meta_outs, ratio=0.0, train=train))
@@ -298,7 +298,7 @@ class MetaNetFull(chainer.Chain):
 
 		x = Variable(x_set)
 		with chainer.no_backprop_mode():
-...     	with chainer.force_backprop_mode():
+			with chainer.force_backprop_mode():
 				xs = F.split_axis(x, x_set.shape[0], axis=0)
 
 		x_loss = 0
@@ -345,7 +345,7 @@ class MetaNetFull(chainer.Chain):
 			y_batch = mod.array(lbl, dtype=np.int32).reshape((1,))
 			lbl = Variable(y_batch)
 			with chainer.no_backprop_mode():
-...     		with chainer.force_backprop_mode():
+				with chainer.force_backprop_mode():
 					x_loss += F.softmax_cross_entropy(y, lbl)
 					preds += mod.argmax(y.data, 1).tolist()
 
